@@ -48,9 +48,6 @@ export const registerUser = async (email: string, password: string) => {
 
     // Send verification email
     await sendEmailVerification(user);
-    message.success(
-      "Registration successful! Please check your email to verify your account."
-    );
 
     return user;
   } catch (error: any) {

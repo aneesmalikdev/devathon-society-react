@@ -7,14 +7,14 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../connections/firebaseConfig";
 import { loginUser, logOut, registerUser } from "../apis/auth/firebaseAuth";
 import { errorToast } from "../utils/toastUtils";
 
 type AuthContextType = {
-  currentUser: any;
+  currentUser: User | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -27,7 +27,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -55,27 +55,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         errorToast("Please verify your email before logging in.");
         await logOut();
-        navigate("/verify-email");
       }
     } catch (error) {
-      throw error;
+      errorToast("Login failed. Please check your credentials.");
     }
   };
 
   const register = async (email: string, password: string) => {
     try {
       await registerUser(email, password);
-      navigate("/verify-email"); 
+      navigate("/verify-email"); // Redirect to the verification page
     } catch (error) {
-      throw error;
+      errorToast("Registration failed. Please try again.");
     }
   };
 
   const logout = async () => {
     try {
       await logOut();
-      setCurrentUser(null);
-      navigate("/login");
+      setCurrentUser(null); // Clear currentUser
+      navigate("/login"); // Redirect to login page
     } catch (error) {
       errorToast("Logout failed. Please try again.");
     }
