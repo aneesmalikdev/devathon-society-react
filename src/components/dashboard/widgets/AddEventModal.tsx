@@ -14,7 +14,6 @@ function AddEventModal({
   const [eventDate, setEventDate] = useState(null);
 
   const handleOk = () => {
-    console.log("Adding event:", { title: eventTitle, date: eventDate });
     if (eventTitle.trim().length && eventDate)
       handleAddEvent(eventTitle, eventDate);
     setIsModalOpen(false);

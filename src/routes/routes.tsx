@@ -6,6 +6,7 @@ import { LoginPage } from "../components/login";
 import Register from "../components/register/page/RegisterPage";
 import { useAuth } from "../context/authContext";
 import DashboardPage from "../components/dashboard/page/DashboardPage";
+import ResidentsPage from "../components/residents/page/ResidentsPage";
 
 const NotFound = lazy(
   () => import("../components/not-found/page/NotFoundPage")
@@ -40,7 +41,7 @@ const navs: NavType[] = [
   {
     path: "/residents",
     label: "residents",
-    element: <h1 className="bg-gray">Residents</h1>,
+    element: <ResidentsPage />,
     private: true,
     withLayout: true,
   },
