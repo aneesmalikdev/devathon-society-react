@@ -1,8 +1,10 @@
 import { FunctionComponent, useState } from "react";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import BillsList from "../widgets/BillsList";
+import GenerateBillModal from "../widgets/GenerateBillsModal";
+import axiosClient from "../../../clients/axios-client";
 
 interface BillsPageProps {}
 
@@ -26,14 +28,16 @@ const BillsPage: FunctionComponent<BillsPageProps> = () => {
     },
   ]);
 
-  function handleAddResident(
-    residentName: string,
+  async function handleGenerateBill(
+    residentId: string,
     type: string,
     amount: number,
-    dueDate: string,
-    status: string
+    dueDate: string
   ) {
-    setBills([...bills, { residentName, type, amount, dueDate, status }]);
+    try {
+      await axiosClient.post("/bills", { residentId, type, amount, dueDate });
+      message.success("Bill Created!");
+    } catch (error) {}
   }
   const showModal = () => {
     setIsModalOpen(true);
@@ -41,18 +45,18 @@ const BillsPage: FunctionComponent<BillsPageProps> = () => {
   return (
     <div>
       <div className="flex justify-between">
-        <p className="text-xl font-bold font-satoshi">Residents:</p>
+        <p className="text-xl font-bold font-satoshi">Bills:</p>
         <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>
           Generate Bill
         </Button>
       </div>
       <BillsList bills={bills} />
 
-      {/* <GenerateBillModal
+      <GenerateBillModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        handleAddResident={handleAddResident}
-      /> */}
+        handleAddBill={handleGenerateBill}
+      />
     </div>
   );
 };
