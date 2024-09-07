@@ -21,7 +21,7 @@ const navs: NavType[] = [
   {
     path: "/home",
     label: "home",
-    element: <h1>Home</h1>,
+    element: <h1 className="bg-gray">Home</h1>,
   },
   {
     path: "/login",
@@ -40,7 +40,7 @@ const navs: NavType[] = [
     label: "dashboard",
     element: (
       <DefaultLayout>
-        <h1>Dashboard</h1>
+        <h1 className="bg-gray">Dashboard</h1>
       </DefaultLayout>
     ),
   },
