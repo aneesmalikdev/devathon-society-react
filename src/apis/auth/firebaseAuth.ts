@@ -8,9 +8,13 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../../connections/firebaseConfig";
+import { useAuth } from "../../context/authContext";
+import { useEffect } from "react";
 
 // Function to handle user login
 export const loginUser = async (email: string, password: string) => {
+  const userAuth = useAuth();
+
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -18,6 +22,7 @@ export const loginUser = async (email: string, password: string) => {
       password
     );
     message.success("Login successful!");
+
     return userCredential.user;
   } catch (error) {
     message.error("Invalid credential.");

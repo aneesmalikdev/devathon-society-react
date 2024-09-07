@@ -1,14 +1,14 @@
 import { FC, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import useToast from "../hooks/toast";
+
 import { AxiosError } from "axios";
+import { message } from "antd";
 
 interface Props {
   children: React.ReactNode;
 }
 
 const QueryProvider: FC<Props> = ({ children }) => {
-  const { toast } = useToast();
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -19,7 +19,7 @@ const QueryProvider: FC<Props> = ({ children }) => {
           },
           mutations: {
             onError: (error: unknown) => {
-              void toast.error(
+              void message.error(
                 `Something went wrong: ${
                   (error as AxiosError<{ message: string }>)?.response?.data
                     .message || "unknown"

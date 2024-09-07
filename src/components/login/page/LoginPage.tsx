@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, Button, Card, Typography } from "antd";
 import { useAuth } from "../../../context/authContext";
 import { googleLogin } from "../../../apis/auth/firebaseAuth";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
 const Login = () => {
   const auth = useAuth();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth?.currentUser) navigate("/dashboard");
+  }, []);
+
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
       await auth?.login(values.email, values.password);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
     } finally {

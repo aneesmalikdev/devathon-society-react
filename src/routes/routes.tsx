@@ -15,53 +15,46 @@ type NavType = {
   label?: string;
   element?: ReactElement;
   private?: boolean;
+  withLayout?: boolean;
 };
 
 const navs: NavType[] = [
   {
-    path: "/home",
-    label: "home",
-    element: <h1 className="bg-gray">Home</h1>,
-  },
-  {
     path: "/login",
     label: "login",
     element: <LoginPage />,
-    private: true,
   },
   {
     path: "/register",
     label: "register",
     element: <Register />,
-    private: true,
   },
   {
     path: "/dashboard",
     label: "dashboard",
-    element: (
-      <DefaultLayout>
-        <h1 className="bg-gray">Dashboard</h1>
-      </DefaultLayout>
-    ),
+    element: <h1 className="bg-gray">Dashboard</h1>,
+    private: true,
+    withLayout: true,
   },
 ];
 
 const Routes: FC = () => {
-  const auth = useAuth()
+  const auth = useAuth();
   const routes = [
     {
       path: "/",
       element: <DefaultComponent />,
       children: [
-        { path: "", element: <Navigate to="home" /> },
-        ...navs,
+        { path: "", element: <Navigate to="dashboard" /> },
         ...navs.map((nav) => ({
           ...nav,
           element:
             nav.private && !auth?.currentUser ? ( // Protect private routes
               <Navigate to="/login" replace /> // Redirect to login if not authenticated
-            ) : (
+            ) : nav.withLayout ? (
               <DefaultLayout>{nav.element}</DefaultLayout>
+            ) : (
+              nav.element
             ),
         })),
 
