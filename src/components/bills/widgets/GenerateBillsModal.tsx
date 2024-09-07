@@ -26,10 +26,14 @@ function GenerateBillModal({
   useEffect(() => {
     async function getResidents() {
       const res = await axiosClient.get("/users");
-      setResidents(res.data.users);
+      console.log(res);
+
+      setResidents((res as any).users);
     }
     getResidents();
   }, []);
+
+  console.log(residents);
 
   const handleOk = () => {
     if (selectedResident && billType && amount && dueDate)
@@ -65,7 +69,7 @@ function GenerateBillModal({
           >
             {residents.map((resident) => (
               <Option key={resident.id} value={resident.id}>
-                {resident.name}
+                {resident.firstName}
               </Option>
             ))}
           </Select>
