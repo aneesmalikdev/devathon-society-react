@@ -8,13 +8,9 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../../connections/firebaseConfig";
-import { useAuth } from "../../context/authContext";
-import { useEffect } from "react";
 
 // Function to handle user login
 export const loginUser = async (email: string, password: string) => {
-  const userAuth = useAuth();
-
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -36,8 +32,7 @@ export const googleLogin = async () => {
     await signInWithPopup(auth, provider);
     message.success("Google login successful!");
   } catch (error) {
-    console.error("Google login failed:", error);
-    message.error("Google login failed. Please try again.");
+    throw console.error("Google login failed:", error);
   }
 };
 
