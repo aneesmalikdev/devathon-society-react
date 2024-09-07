@@ -1,7 +1,8 @@
-import { FC, lazy, ReactElement, Suspense } from "react";
-import { BrowserRouter, Navigate, useRoutes } from "react-router-dom";
-import { LoginPage } from "../components/login";
+import { FC, lazy, ReactElement } from "react";
+import { Navigate, useRoutes } from "react-router-dom";
 import DefaultComponent from "../components/default";
+import DefaultLayout from "../components/layout";
+import { LoginPage } from "../components/login";
 
 const NotFound = lazy(
   () => import("../components/not-found/page/NotFoundPage")
@@ -18,13 +19,22 @@ const navs: NavType[] = [
   {
     path: "/home",
     label: "home",
+    element: <h1>Home</h1>,
+  },
+  {
+    path: "/login",
+    label: "login",
     element: <LoginPage />,
+    private: true,
   },
   {
     path: "/dashboard",
     label: "dashboard",
-    element: <h1>Dashboard</h1>,
-    private: true,
+    element: (
+      <DefaultLayout>
+        <h1>Dashboard</h1>
+      </DefaultLayout>
+    ),
   },
 ];
 
@@ -35,13 +45,15 @@ const Routes: FC = () => {
       element: <DefaultComponent />,
       children: [
         { path: "", element: <Navigate to="home" /> },
+        ...navs,
         ...navs.map((nav) => ({
           ...nav,
           element:
-            nav.private && !isAuthenticated ? ( // Protect private routes
+            // nav.private && !isAuthenticated ? ( // Protect private routes
+            nav.private && false ? ( // Protect private routes
               <Navigate to="/home" replace /> // Redirect to login if not authenticated
             ) : (
-              nav.element
+              <DefaultLayout>{nav.element}</DefaultLayout>
             ),
         })),
 

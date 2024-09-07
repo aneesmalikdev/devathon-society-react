@@ -1,6 +1,7 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import "./css/style.css";
+import "./css/satoshi.css";
 
 import QueryProvider from "./config/provider/query-provider.tsx";
 import { ToasterConfig } from "./config/toast-config.tsx";
