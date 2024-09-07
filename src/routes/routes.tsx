@@ -3,6 +3,8 @@ import { Navigate, useRoutes } from "react-router-dom";
 import DefaultComponent from "../components/default";
 import DefaultLayout from "../components/layout";
 import { LoginPage } from "../components/login";
+import Register from "../components/register/page/RegisterPage";
+import { useAuth } from "../context/authContext";
 
 const NotFound = lazy(
   () => import("../components/not-found/page/NotFoundPage")
@@ -28,6 +30,12 @@ const navs: NavType[] = [
     private: true,
   },
   {
+    path: "/register",
+    label: "register",
+    element: <Register />,
+    private: true,
+  },
+  {
     path: "/dashboard",
     label: "dashboard",
     element: (
@@ -39,6 +47,7 @@ const navs: NavType[] = [
 ];
 
 const Routes: FC = () => {
+  const auth = useAuth()
   const routes = [
     {
       path: "/",
@@ -49,9 +58,8 @@ const Routes: FC = () => {
         ...navs.map((nav) => ({
           ...nav,
           element:
-            // nav.private && !isAuthenticated ? ( // Protect private routes
-            nav.private && false ? ( // Protect private routes
-              <Navigate to="/home" replace /> // Redirect to login if not authenticated
+            nav.private && !auth?.currentUser ? ( // Protect private routes
+              <Navigate to="/login" replace /> // Redirect to login if not authenticated
             ) : (
               <DefaultLayout>{nav.element}</DefaultLayout>
             ),

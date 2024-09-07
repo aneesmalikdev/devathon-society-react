@@ -7,6 +7,7 @@ import QueryProvider from "./config/provider/query-provider.tsx";
 import { ToasterConfig } from "./config/toast-config.tsx";
 import Routes from "./routes/routes.tsx";
 import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./context/authContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")!).render(
       <ToasterConfig />
       <Suspense fallback="loading...">
         <BrowserRouter>
-          <Routes />
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
         </BrowserRouter>
       </Suspense>
     </QueryProvider>
