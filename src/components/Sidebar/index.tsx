@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { UserOutlined } from "@ant-design/icons";
 // import Logo from '../../images/logo/logo.svg';
 
 interface SidebarProps {
@@ -97,9 +98,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     (pathname === "/" || pathname.includes("dashboard")) &&
                     "bg-graydark dark:bg-meta-4"
                   }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
                 >
                   <svg
                     className="fill-current"
@@ -127,6 +125,31 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     />
                   </svg>
                   {t("dashboard")}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/residents"
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    (pathname === "/" || pathname.includes("residents")) &&
+                    "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <UserOutlined />
+                  {t("residents")}
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/bills"
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    (pathname === "/" || pathname.includes("bills")) &&
+                    "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <UserOutlined />
+                  {t("bills")}
                 </NavLink>
               </li>
             </ul>

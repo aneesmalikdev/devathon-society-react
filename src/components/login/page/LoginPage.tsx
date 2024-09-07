@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { Form, Input, Button, Card, Typography, message } from "antd";
 import { useAuth } from "../../../context/authContext";
 import { googleLogin } from "../../../apis/auth/firebaseAuth";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +76,14 @@ const Login = () => {
 
         <div className="flex items-center justify-center mt-4">
           <Button
-            onClick={googleLogin}
+            onClick={async () => {
+              try {
+                await googleLogin();
+                navigate("/dashboard");
+              } catch (error) {
+                message.error("Google login failed. Please try again.");
+              }
+            }}
             className="w-full bg-red-500 hover:bg-red-600 text-white"
           >
             Login with Google

@@ -1,5 +1,7 @@
 {
   "translation": {
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "residents": "Residents",
+    "bills": "Bills"
   }
 }

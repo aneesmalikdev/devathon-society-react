@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./assets/css/satoshi.css";
 import "./assets/css/style.css";
+import "rsuite/dist/rsuite.min.css";
 
 import QueryProvider from "./config/provider/query-provider.tsx";
 import { ToasterConfig } from "./config/toast-config.tsx";

@@ -36,8 +36,7 @@ export const googleLogin = async () => {
     await signInWithPopup(auth, provider);
     message.success("Google login successful!");
   } catch (error) {
-    console.error("Google login failed:", error);
-    message.error("Google login failed. Please try again.");
+    throw console.error("Google login failed:", error);
   }
 };
 
