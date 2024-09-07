@@ -8,25 +8,25 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../../connections/firebaseConfig";
-import { useAuth } from "../../context/authContext";
-import { useEffect } from "react";
 
 // Function to handle user login
 export const loginUser = async (email: string, password: string) => {
-  const userAuth = useAuth();
-
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
-    message.success("Login successful!");
 
-    return userCredential.user;
-  } catch (error) {
-    message.error("Invalid credential.");
-  }
+    const user = userCredential.user;
+
+    // Get the ID token
+    const accessToken = await user.getIdToken();
+
+    // Store the access token in localStorage
+    localStorage.setItem("token", accessToken);
+    return user;
+  } catch (error) {}
 };
 
 // Function to handle google login
@@ -53,6 +53,7 @@ export const registerUser = async (email: string, password: string) => {
 
     // Send verification email
     await sendEmailVerification(user);
+    await logOut();
 
     return user;
   } catch (error: any) {
@@ -68,8 +69,5 @@ export const registerUser = async (email: string, password: string) => {
 export const logOut = async () => {
   try {
     await signOut(auth);
-    message.success("Logout successful!");
-  } catch (error) {
-    message.error("Logout failed. Please try again.");
-  }
+  } catch (error) {}
 };

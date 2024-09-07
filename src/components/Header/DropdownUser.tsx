@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ClickOutside from "../../common/click-outside";
+import { useAuth } from "../../context/authContext";
 // import UserOne from "../../images/user/user-01.png";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const auth = useAuth()
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -120,7 +122,7 @@ const DropdownUser = () => {
               </Link>
             </li>
           </ul>
-          <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button onClick={auth?.logout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"

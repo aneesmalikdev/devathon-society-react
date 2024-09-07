@@ -5,6 +5,7 @@ import DefaultLayout from "../components/layout";
 import { LoginPage } from "../components/login";
 import Register from "../components/register/page/RegisterPage";
 import { useAuth } from "../context/authContext";
+import VerifyEmailPage from "../components/verify-email/VerifyEmail";
 
 const NotFound = lazy(
   () => import("../components/not-found/page/NotFoundPage")
@@ -28,6 +29,11 @@ const navs: NavType[] = [
     path: "/register",
     label: "register",
     element: <Register />,
+  },
+  {
+    path: "/verify-email",
+    label: "verify-email",
+    element: <VerifyEmailPage />,
   },
   {
     path: "/dashboard",

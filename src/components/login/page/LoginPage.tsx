@@ -3,12 +3,15 @@ import { Form, Input, Button, Card, Typography } from "antd";
 import { useAuth } from "../../../context/authContext";
 import { googleLogin } from "../../../apis/auth/firebaseAuth";
 import { useNavigate } from "react-router-dom";
+import ProfileModal from "../widgets/ProfileModal";
+import { me } from "../../../apis/auth/user";
 
 const { Title } = Typography;
 
 const Login = () => {
   const auth = useAuth();
   let navigate = useNavigate();
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (auth?.currentUser) navigate("/dashboard");
@@ -20,7 +23,14 @@ const Login = () => {
     try {
       setLoading(true);
       await auth?.login(values.email, values.password);
-      navigate("/dashboard");
+      const userProfile: any = await me();
+      console.log("userPro:", userProfile);
+      if (userProfile.user !== null) {
+        navigate("/dashboard");
+      } else {
+        navigate("/dashboard");
+        setShowProfileModal(true);
+      }
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
@@ -72,7 +82,24 @@ const Login = () => {
             Login with Google
           </Button>
         </div>
+        <div className="text-center text-sm mt-2">
+          <span>
+            Not a Member:{" "}
+            <a
+              href="/register"
+              className="text-black underline hover:underline"
+            >
+              Sign Up Now
+            </a>
+          </span>
+        </div>
       </Card>
+      {showProfileModal && (
+        <ProfileModal
+          showProfileModal={showProfileModal}
+          setShowProfileModal={setShowProfileModal}
+        />
+      )}
     </div>
   );
 };

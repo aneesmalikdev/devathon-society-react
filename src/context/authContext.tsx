@@ -11,7 +11,8 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../connections/firebaseConfig";
 import { loginUser, logOut, registerUser } from "../apis/auth/firebaseAuth";
-import { errorToast } from "../utils/toastUtils";
+import { errorToast, successToast } from "../utils/toastUtils";
+import { me } from "../apis/auth/user";
 
 type AuthContextType = {
   currentUser: User | null;
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       setLoading(false);
     });
+    console.log("efectUser: ", currentUser)
 
     return () => unsubscribe();
   }, []);
@@ -48,10 +50,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       const user = await loginUser(email, password);
+      console.log("users: ", user)
 
       if (user?.emailVerified) {
         setCurrentUser(user);
-        navigate("/");
+        
+        successToast("Login successfuly!")
       } else {
         errorToast("Please verify your email before logging in.");
         await logOut();
@@ -75,6 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await logOut();
       setCurrentUser(null); // Clear currentUser
       navigate("/login"); // Redirect to login page
+      successToast('Logout successfuly')
     } catch (error) {
       errorToast("Logout failed. Please try again.");
     }

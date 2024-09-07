@@ -3,7 +3,7 @@
 import axios, { AxiosError } from "axios";
 
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -15,7 +15,7 @@ axiosClient.interceptors.request.use(
     // Do something before request is sent
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+      config.headers["Authorization"] = token;
     }
 
     return config;
