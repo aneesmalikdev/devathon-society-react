@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, DatePicker, Input, Upload, InputNumber, Select } from "antd";
+import axiosClient from "../../../clients/axios-client";
 
 const { Option } = Select;
 function GenerateBillModal({
@@ -20,12 +21,15 @@ function GenerateBillModal({
   const [billType, setBillType] = useState(null);
   const [amount, setAmount] = useState(0);
   const [dueDate, setDueDate] = useState(null);
+  const [residents, setResidents] = useState<any[]>([]);
 
-  const residents = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-    // ... more residents
-  ];
+  useEffect(() => {
+    async function getResidents() {
+      const res = await axiosClient.get("/users");
+      setResidents(res.data.users);
+    }
+    getResidents();
+  }, []);
 
   const handleOk = () => {
     if (selectedResident && billType && amount && dueDate)
